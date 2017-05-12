@@ -38,10 +38,10 @@ https://github.com/gi1mic/19Dollar-DSP-Filter
 <h1>Testing using amplified speaker</h1>
 <p>You can test the board using any rig by simply feeding the sets audio output into the audio input of the Teensy. A 50ohm resistor acts as a load while a 10uf cap decouples the audio input. The Teensy DAC is then to an amplified speaker via a 10nf cap.</p>
 <p>You will need to check the debug output using a terminal to make sure the peak values generally don't exceed 1.0</p>
-<p> You will also probably want to modify the code to change the pinMode from INPUT to INPUT_PULLUP so you can simply add a switch between GND and PIN0.</p>
+<p> You will also probably want to modify the code to change the pinMode from INPUT to INPUT_PULLUP so you can simply use a switch between GND and PIN0.</p>
 <p>I'm hopeless at using Fritzing but these images should give you a rough idea of how to wire it up</p>
-<img src="https://gi1mic.github.io/images/Inline%20Audio%20Schematic.jpg" alt="Inline Schematic" >
-<img src="https://gi1mic.github.io/images/Inline%20Audio%20Breadboard.jpg" alt="Inline Breadboard" ><h1>Fitting the Teensy into a FT-817</h1>
+<img src="https://gi1mic.github.io/images/Inline%20Audio%20Schematic.jpg" width="800" alt="Inline Schematic" >
+<img src="https://gi1mic.github.io/images/Inline%20Audio%20Breadboard.jpg" width="800" alt="Inline Breadboard" ><h1>Fitting the Teensy into a FT-817</h1>
 <p><strong>WARNING: </strong></p>
 <p><strong>Make sure you cut the PCB track on the Teensy which connects the external RAW and USB power together. Failure to do this may damage your PC USB port if the board is fitted to the FT-817. Cutting this track means the Teensy is no longer powered via USB.</strong></p>
 <p>&nbsp;</p>
