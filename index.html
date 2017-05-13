@@ -179,7 +179,8 @@ https://github.com/gi1mic/19Dollar-DSP-Filter
 <p>Audio prompts are used to identify filters as they are selected. Creating a new audio prompt requires creating a suitable WAV file and then converting that into a data (C Array) for use inside the application.&nbsp;</p>
 <h3>Creating a WAV file</h3>
 <p>An easy way to create the WAV file is to use the online system <a href="https://online-voice-recorder.com/">https://online-voice-recorder.com/</a> this allows you to record a message and trim it to suit. When you are happy you can save the final message to a directory on your computer.</p>
-<p>Now use http://audio.online-convert.com/convert-to-wav to convert the saved MP3 file to the WAV format. You can drop the audio quality down (try 8bit@16Khz) to save memory in the final code. After all it's not like we need HD audio for this application</p>
+<p>Now use http://audio.online-convert.com/convert-to-wav to convert the saved MP3 file to the WAV format. You can drop the audio quality down (try 8bit@11025hz) to save flash memory in the final code. After all it's not like we need HD audio for this application</p>
+<p>Tip: if you need to perform batch conversions have a look at <a href="http://www.audacityteam.org"> audacity</a> and <a href="https://sourceforge.net/projects/lamexp/">lamexp</a></p>
 <p>&nbsp;</p>
 <h3>WAV file conversion</h3>
 <p>WAV file conversion requires a windows command line application called <a href="https://github.com/PaulStoffregen/Audio/tree/master/extras/wav2sketch">wav2sketch</a>. Simply put it in a folder along with the WAV file(s) you generated earlier and run it. Detailed instructions can be found <a href="https://forum.pjrc.com/threads/42401-Instructions-or-tutorials-for-using-wav2sketch?p=135069&amp;viewfull=1#post135069">here</a>.</p>
