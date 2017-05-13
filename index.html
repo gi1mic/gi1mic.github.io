@@ -5,8 +5,9 @@
 <p>This is a low cost open source audio DSP filter for Radio Hams. It is released as a building block for anyone who wants to design or customise their own audio filters.</p>
 <p>It is different from commercial offerings because it is cheap, can contain multiple filter profiles and uses voice messages to describe which filter has been selected.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/s9hHDQcvHOI"   frameborder="0" style="border: 3px solid #EEE;" allowfullscreen></iframe>
-<p>While I am using the board with a Yaesu FT-817 it should be easily adaptable to any other rig or fitted inside an amplified speaker if you don&rsquo;t want to modify your radio.</p>
+<p>While I am using the board with a Yaesu FT-817 it is be easily adaptable to any other rig or fitted inside an amplified speaker as described later</p>
 <p>The design is based around a $19 Teensy 3.2 board along with a handful of other components which most radio hams probably have in their junk box. The board is programmed using the Arduino IDE and takes audio in via an ADC, filters it using a software defined FIR filter and outputs it via a DAC.</p>
+<p>I am currently working on adding Morse and DTMF to speech decoding but that will require and additional SD card to hold the additional speech files. After that I will probably add a rotary encoder and a small OLED display to allow the board to do twin passband filters.</p>
 <p>Before anyone asks - no you cannot use an Arduino to do this.</p>
 <p>This is only a starting point and not meant to be a detailed introduction to Teensy or DSP filters. There are many other cool things that could be done with this board and library.</p>
 <p>&nbsp;</p>
