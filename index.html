@@ -174,11 +174,21 @@ https://github.com/gi1mic/19Dollar-DSP-Filter
 <li>When happy select the &ldquo;Targets Menu/Generate C Header&rdquo; option</li>
 </ol>
 <p>&nbsp;</p>
-<img src="https://gi1mic.github.io/images/image016.png" alt="Matlab Export" >
-<p>The Numerator and Numerator length are simply the names used in the generated file for the coefficients. I would recommend using something line filterXXXXX and filterLenXXXXX.</p>
+<img src="https://gi1mic.github.io/images/matlabGenerateCHeadder.jpg" alt="MATLAB Export" >
+<p>The Numerator and Numerator length are simply the names used in the generated file for the coefficients. I would recommend using something line filterXXXXX and filterLenXXXXX if creating new filters</p>
 <p>Export the files as Unsigned 16bit integers for compatibility with the Teensy development environment. The files should be saved into your development environment.</p>
 <p>&nbsp;</p>
 <p>You can then update filters.h to add your newly designed code and then add the filters into the &ldquo;fir_filter fir_list&rdquo; array in the main Sketch using the existing code as an example.</p>
+<p>You will need to comment out or delete the line <b>#include tmwtypes.h</b> in the generated .h file. you will also need to modify the variable types from:</p>
+<p><b>
+&nbsp;&nbsp;&nbsp;&nbsp;const int bandpassMorseLen = 200;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;const uint16_T bandpassMorse[200] = {</b></p>
+<p>To:</p>
+<p><b>
+&nbsp;&nbsp;&nbsp;&nbsp;int bandpassMorseLen = 200;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;short bandpassMorse[200] = {</b></p>
+<img src="https://gi1mic.github.io/images/MatlabMorseFilter.jpg" width="800" alt="MATLAB Simulation of Morse filter" >
+<p>The above image is the simulation of the actual Morse filter used in the code. It may be too sharp for some people. But that should be OK as you can create your own!</p>
 <p>&nbsp;</p>
 <h2>Generating Audio Prompts</h2>
 <p>Audio prompts are used to identify filters as they are selected. Creating a new audio prompt requires creating a suitable WAV file and then converting that into a data (C Array) for use inside the application.&nbsp;</p>
