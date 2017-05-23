@@ -1,5 +1,6 @@
 <h1>GI1MIC</h1>
 <h1>The $19 DIY DSP audio filter</h1>
+<p>Last updated 23rd May 2017</p>
 <h1>Introduction</h1>
 <p>This is a low cost open source audio DSP filter for Radio Hams. It is released as a building block for anyone who wants to design or customise their own audio filters. It is different from commercial offerings because it is cheap, can contain multiple filter profiles and uses voice messages to describe which filter has been selected.</p>
 <p><iframe src="https://www.youtube.com/embed/s9hHDQcvHOI" width="560" height="315" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
@@ -7,16 +8,17 @@
 <p>The design is based around a $19 Teensy 3.2 board plus a handful of components which most radio hams probably have in their junk box. The board is programmed using the Arduino IDE and takes audio in via an ADC, filters it using a software defined FIR filter and outputs it via a DAC.</p>
 <p>The latest release:</p>
 <ol>
-<li>removes the need to use external tools to calculate the filters. It is all now done in code. There are examples of bandpass, bandstop, hipass and lowpass included.</li>
-<li>I enabled emulation of a USB sound card allowing direct audio RX on a PC.</li>
-<li>I added USB to CAT support but have not actually tested it yet!</li>
-<li>Added options to enable different types of debugging support but dont use these in CAT mode</li>
-<li>Added support for the Teensy audio board. This makes it really easy to use with external amplified speakers.</li>
-<li>You can also add a rotary encoder to change the centre points of the filters. This is not much use yet as the setting is not saved between power cycles.</li>
+<li>Removes the need to use external tools to calculate the filters. It is all now done in code. There are examples of bandpass, bandstop, hipass and lowpass included in the "filterList[]" array.</li>
+<li>Enabled emulation of a USB sound card allowing direct audio RX on a PC. To use this, make sure you select "Serial + Midi + Audio" for the "USB Type" on the Arduino Tools menu before compiling.</li>
+<li>Added USB to CAT support but have not had time to test it yet!</li>
+<li>Added options to enable different types of debugging support. Just make sure you don&rsquo;t use these in CAT mode</li>
+<li>Added support for the Teensy audio board. This makes it easy to use with external amplified speakers. To use it comment out "#define FT817" and uncomment "#define SPEAKER"</li>
+<li>Added support for a rotary encoder to change the centre points of the filters. Its not much use yet since the setting is not saved between power cycles but I will add that in due course.</li>
+<li>Upped the baud rate to 115200 from 9600</li>
 </ol>
-<p>I was working on Morse/DTMF to speech decoding, which works but is not ready for prime time, however it will require an additional SD card to hold the necessary speech files and I got side-tracked into trying to implement a moving average filter.&nbsp;</p>
-<p>After that I will probably add a small OLED display to allow the board to do twin passband filters.</p>
-<p>Before anyone asks - no you cannot use an Arduino to do this.</p>
+<p>I had been working on Morse/DTMF to speech decoding, which works but is not ready for prime time just yet so the code is not included in this release. This functionality will require an additional SD card to hold the necessary speech files and did not get finished as I got side-tracked into trying to implement a real-time moving average filter.&nbsp;</p>
+<p>Once I have those done I will probably add a small OLED display to allow the board to do twin passband filters using a second rotary encoder.</p>
+<p>Note you cannot do audio processing on a normal Arduino. It requires a Teensy 3.2/3.5 or 3.6.</p>
 <p>This project is only a starting point and not meant to be a detailed introduction to Teensy or DSP filters.</p>
 <p>There are many other cool things that could be done with this board and audio library i.e. decoding and potentially encoding some types of digital modes....</p>
 <p>Not sure how well it would work but I would also be interested in trying to use the filters in conjunction with tone detection to regenerate a Morse tone with no direct audio pass-through i.e. no static just a pure regenerated tone produced by the board in response to received Morse.</p>
@@ -83,7 +85,7 @@
 <p>PWR is taken straight directly of the FT817 PCB. On my rig this provides 9.6V when the FT-817 is used with a 13.8V external power source. The voltage regulators fitted to the Teensy 3.2 boards are a LP38691 which is rated at 10V max (Teensy documentation states 6V max). I added an inline power diode to drop the input another 0.6V to create some headroom. While close to the limit the regulator does not get excessively warm.</p>
 <p><img src="https://gi1mic.github.io/images/image006.jpg" alt="Power Feed" width="601" height="502" /></p>
 <h2>Breaking into the audio chain</h2>
-<p>Remove C1338 and attach two shielded audio cables as below. You can easily determine which is the the audio amplifier by simply tapping the bare end and listening for mains hum.</p>
+<p>Remove C1338 and attach two shielded audio cables as below. You can easily determine which is the audio amplifier by simply tapping the bare end and listening for mains hum.</p>
 <p><img src="https://gi1mic.github.io/images/image007.jpg" alt="Audio Feed" width="601" height="445" /></p>
 <p>Audio input to the Teensy is accomplished using one of the ADC convertors on pin PA2. This is decoupled from the FT817 via a 10nf ceramic cap. I used a 6.8K resistor between PA2 and GND to limit the input as it was saturating the ADC. You can verify if you need to adjust this value later using a terminal emulator connected to the Teensy once the code is loaded.</p>
 <p>Audio output from the Teensy comes from the internal 12bit DAC. This has a much higher quality output than PWM outputs used by most single chip systems. Again, the DAC is decoupled from the FT817 via a 10nf ceramic cap.</p>
@@ -103,7 +105,7 @@
 <p>As you can see there are only six components external to the Teensy.</p>
 <p><img src="https://gi1mic.github.io/images/image011.png" alt="Pin Out" width="600" height="331" /></p>
 <h2>Debugging</h2>
-<p>Once programmed the device will appear as a standard serial port. Use the built in Arduino IDE Serial Monitor or a terminal program of your choice to connect to the board at 9600 Baud, 8,N,1.</p>
+<p>Once programmed the device will appear as a standard serial port. Use the built in Arduino IDE Serial Monitor or a terminal program of your choice to connect to the board at 115200 Baud, 8,N,1.</p>
 <p>Debug output format</p>
 <ul>
 <li>Start-up message</li>
