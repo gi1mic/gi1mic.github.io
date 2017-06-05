@@ -49,7 +49,7 @@
 <ul>
 <li>Teensy: 3.1/3.2</li>
 <li>USB Type: serial</li>
-<li>CPU Speed: 96Mhz</li>
+<li>CPU Speed: 96Mhz (see notes about power consumption)</li>
 <li>Optimize: Faster</li>
 <li>Com Port: Set as required to select the Teensy</li>
 </ul>
@@ -124,12 +124,27 @@
 <p>Both these problems can be solved by using speech stored as WAV files on an SD card. The SD card eliminates any storage issues and WAV playback is off loaded to DMA hardware on the chip so the processor does not have to do much freeing it up to continue decoding. Even here I ran into a slight issue. I had to buffer characters as they are being played back since most Morse code is transmitted faster than it can generally be spoken. This is not a major issue as the spoken word catches up during the gaps in the Morse transmission. What I may try doing if speeding up the audio in the WAV files while maintaining the pitch to reduce the overall time delay.</p>
 <p>Ultimately the <a href="https://www.pjrc.com/teensy/sd_adaptor.html">Teensy SD board</a> should allow this functionality to be added to the FT817 version.</p>
 <p>&nbsp;</p>
+<p>&nbsp;</p>
 <h1>Configuration</h1>
 <p>All the important configuration options are in the settings.h file. It is self documenting.</p>
 <p>&nbsp;</p>
+<h1>Power Consumption/Battery operation</h1>
+<p>Since I am not worried about power consumption I build and test the Teensy running at its fastest speed of 96Mhz.</p>
+<p>If you want to recover as much power as possible for battery operation you can compile for a slower clock speed. At 48Mhz the Teensy 3.2 board draws about 30ma and should still be able to run the existing code without issue.</p>
+<p>Going below this point requires the number of filter coefficients to be reduced to around 120 otherwise the CPU cannot complete everything it needs to do in time. At 120 coefficients, you do this you should be able to compile for 24Mhz which will reduce consumption down to around 22ma.</p>
+<p>Also, don't forget to set the IDE "tools/optimise" setting to "fastest" to optimise the code for slow clock speeds.<br />&nbsp;</p>
+<h1>Software Overview</h1>
+<p>The following diagram provides a very simplified overview of the software components.</p>
+<p>&nbsp;</p>
+<p>audioInput is via an ADC converter. It is patched into a a FIR filter (myFilter) that does most of the hard work. A toneDetector (toneDetect) provides the basic detection mechanism for the morse decoding. A peak level detector is used for debugging to make sure the audio is not being overloaded. The output from the FIR filter is mixed with audio coming from the PC (the Teensy is configured to look like a USB sound card - inPc) and audio playback from flash rom (audioPrompt). The output from the mixer is feed to the DAC (audioOuput) and back to the PC again via the emulated PC soundcard interface (outPC).</p>
+<p><img src="https://gi1mic.github.io/images/FT817filterGraph.jpg" alt="Trigger" width="601" height="371" /></p>
 <h1>Teensy Audio Board Test rig</h1>
 <p>This is my Teensy and Teensy audio board test rig. The LED is connected between pin15 and GND and is used to signify a Morse tone detection. I know I'm not using a current limiting resistor but you should not follow my bad example.</p>
 <p><img src="https://gi1mic.github.io/images/image018.jpg" alt="Trigger" width="601" height="371" /></p>
+<p>&nbsp;</p>
+<p>The Teensy audio design tool looks like this. The primary differences are a down mixer from stereo to mono, SD card WAV playback and I2S audio inputs/outputs.</p>
+<p><img src="https://gi1mic.github.io/images/SpeakerfilterGraph.jpg" alt="Trigger" width="601" height="371" /></p>
+<p>&nbsp;</p>
 <h1>Teensy</h1>
 <h2>Schematic</h2>
 <p><img src="https://gi1mic.github.io/images/image010.jpg" alt="Schematic" width="601" height="563" /></p>
