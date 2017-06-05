@@ -2,26 +2,39 @@
 <h1>The $19 DIY DSP audio filter</h1>
 <p>Last updated 23rd May 2017</p>
 <h1>Introduction</h1>
-<p>This is a low cost open source audio DSP filter for Radio Hams. It is released as a building block for anyone who wants to design or customise their own audio filters. It is different from commercial offerings because it is cheap, can contain multiple filter profiles and uses voice messages to describe which filter has been selected.</p>
+<p>This is a low cost open source audio DSP filter for Radio Hams. It is released as a building block for anyone who wants to design or customise their own audio filters. It is different from commercial offerings because it is</p>
+<ul>
+<li>Cheap</li>
+<li>Can contain multiple filter profiles based on hi pass, lo pass, band pass or band stop</li>
+<li>You can define the filter points in Hz within the code</li>
+<li>It uses voice messages to describe which filter has been selected</li>
+<li>It is a USB to CAT interface</li>
+<li>It emulates a USB sound card for received audio</li>
+<li>Can performs Morse to voice decode and Morse to USB serial decode</li>
+</ul>
 <p><iframe src="https://www.youtube.com/embed/s9hHDQcvHOI" width="560" height="315" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
-<p>While I am using the board with a Yaesu FT-817 it is be easily adaptable to any other rig (Icom 706/Kenwood TS50 etc) or fitted inside an amplified speaker as described later.</p>
+<p>While I am using the board with a Yaesu FT-817 it is be easily adaptable to any other rig (Icom 706/Kenwood TS50 etc.) or fitted inside an amplified speaker as described later.</p>
 <p>The design is based around a $19 Teensy 3.2 board plus a handful of components which most radio hams probably have in their junk box. The board is programmed using the Arduino IDE and takes audio in via an ADC, filters it using a software defined FIR filter and outputs it via a DAC.</p>
 <p>The latest release:</p>
 <ol>
-<li>Removes the need to use external tools to calculate the filters. It is all now done in code. There are examples of bandpass, bandstop, hipass and lowpass included in the "filterList[]" array.</li>
-<li>Enabled emulation of a USB sound card allowing direct audio RX on a PC. To use this, make sure you select "Serial + Midi + Audio" for the "USB Type" on the Arduino Tools menu before compiling.</li>
-<li>Added USB to CAT support but have not had time to test it yet!</li>
-<li>Added options to enable different types of debugging support. Just make sure you don&rsquo;t use these in CAT mode</li>
-<li>Added support for the Teensy audio board. This makes it easy to use with external amplified speakers. To use it comment out "#define FT817" and uncomment "#define SPEAKER"</li>
-<li>Added support for a rotary encoder to change the centre points of the filters. Its not much use yet since the setting is not saved between power cycles but I will add that in due course.</li>
-<li>Upped the baud rate to 115200 from 9600</li>
+<li>Removes the need to use external tools to calculate the filters. It is all now done in code. There are examples of bandpass, band stop, hi pass and low pass included in the "filterList[]" array.</li>
+<li>Emulates a USB sound card allowing direct audio RX on a PC. To use this, make sure you select "Serial + Midi + Audio" for the "USB Type" on the Arduino Tools menu before compiling.</li>
+<li>Contains USB to CAT support if wired up</li>
+<li>Adds options to enable different types of debugging support. Just make sure you don&rsquo;t use these in CAT mode</li>
+<li>Adds support for the Teensy audio board. This makes it easy to use with external amplified speakers. To use it comment out "#define FT817" in the settings.h file</li>
+<li>Adds support for a rotary encoder to change the centre points of the primary filters. Not much use yet since the setting is not saved between power cycles but I will add that in due course.</li>
+<li>Implements a first pass of Morse to speech decoding. This currently requires the Teensy audio board and a SD card. The code supports LPC speech as an alternative to the SD card but this seems to require too many CPU cycles to allow for Morse decoding.</li>
+<li>Added a feature to allow a call sign to be spoken during power on.</li>
+<li>Uses a baud rate of 38400 for combability with CAT software</li>
 </ol>
-<p>I had been working on Morse/DTMF to speech decoding, which works but is not ready for prime time just yet so the code is not included in this release. This functionality will require an additional SD card to hold the necessary speech files and did not get finished as I got side-tracked into trying to implement a real-time moving average filter.&nbsp;</p>
-<p>Once I have those done I will probably add a small OLED display to allow the board to do twin passband filters using a second rotary encoder.</p>
+<p>I will add support for dual pass band filters next but this will require two rotary encoders making it suitable only for external speaker applications. Once I have done that I will probably add a small OLED display to allow the board to simplify using twin passband filters.</p>
 <p>Note you cannot do audio processing on a normal Arduino. It requires a Teensy 3.2/3.5 or 3.6.</p>
 <p>This project is only a starting point and not meant to be a detailed introduction to Teensy or DSP filters.</p>
-<p>There are many other cool things that could be done with this board and audio library i.e. decoding and potentially encoding some types of digital modes....</p>
+<p>There are many other cool things that could be done with this board and audio library i.e. decoding and potentially encoding some types of digital modes, using a Teensy 3.5 and its second audio DAC to perform outgoing speech filtering....</p>
 <p>Not sure how well it would work but I would also be interested in trying to use the filters in conjunction with tone detection to regenerate a Morse tone with no direct audio pass-through i.e. no static just a pure regenerated tone produced by the board in response to received Morse.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>Any comments or suggestions should be made via <a href="https://forum.pjrc.com/threads/44372-Open-Source-DSP-Audio-Processor-for-FT-817">https://forum.pjrc.com/threads/44372-Open-Source-DSP-Audio-Processor-for-FT-817</a></p>
 <p>&nbsp;</p>
@@ -86,6 +99,7 @@
 </table>
 <h2>Getting a power feed</h2>
 <p>PWR is taken straight directly of the FT817 PCB. On my rig this provides 9.6V when the FT-817 is used with a 13.8V external power source. The voltage regulators fitted to the Teensy 3.2 boards are a LP38691 which is rated at 10V max (Teensy documentation states 6V max). I added an inline power diode to drop the input another 0.6V to create some headroom. While close to the limit the regulator does not get excessively warm.</p>
+<p>Alternatively, you can tap a 5V supply of the TCXO module on the top of the PCB and ditch the diode. I have an aftermarket temperature controlled TXCO fitted which is the blue module marked TXCO-UNIT towards the back of the rig on the left-hand side in the images above. If you look closely you can see a yellow titanium cap which is across the 5V rails. If I ever make this mod i'll document it properly.</p>
 <p><img src="https://gi1mic.github.io/images/image006.jpg" alt="Power Feed" width="601" height="502" /></p>
 <h2>Breaking into the audio chain</h2>
 <p>Remove C1338 and attach two shielded audio cables as below. You can easily determine which is the audio amplifier by simply tapping the bare end and listening for mains hum.</p>
@@ -102,6 +116,23 @@
 <p><img src="https://gi1mic.github.io/images/image009.jpg" alt="Trigger" width="601" height="371" /></p>
 <p>In the future, I aim to take mode signal(s) from switching IC Q1049 allowing automatic selection of filters based on the modulation mode of the radio.</p>
 <p>With the cables fitted it&rsquo;s time to resemble the radio ensuring no wires are trapped or nipped.</p>
+<p>&nbsp;</p>
+<h1>CAT Interface</h1>
+<p>If you uncomment "#define CAT" in the setting.h file and disable all debug messages you can also use the Teensy as a UST-&gt;CAT interface. This requires serial port 2 on the Teensy to be connected to the FT817 CAT interface. Serial port two on the Teensy using pin9 for RX and pin10 for TX. I will add a photograph shortly but for now the following image, even though it is not of a Teensy, should allow anyone who want to try it to move forward.</p>
+<p><img src="https://gi1mic.github.io/images/FT817_acc.png" alt="Trigger" width="601" height="371" /></p>
+<p>&nbsp;</p>
+<h1>Morse to Speech Decode</h1>
+<p>Morse decoding is performed using an implementation of WB7FHC's Simple Morse Code Decoder. I admit I had thought I would be able simple to do this with the Teensy 3.2 board but I ran into two problems that limit the current implementation to a Teensy plus audio board.</p>
+<p>The first issue was simply not enough space to hold the voice files consisting of the alphabet plus numbers and a few special characters. Even at 10K per file or less I simply could not get that much audio stored into the available flash memory. So I then tried LPC coding which most people know as Speak'n'Spell voice synthesis. That works and is still in the code but it seriously limits the fastest decode rate which can be supported. This is simply because LPC requires a lot of CPU cycles causing the decoder to miss the Morse transmission.</p>
+<p>Both these problems can be solved by using speech stored as WAV files on an SD card. The SD card eliminates any storage issues and WAV playback is off loaded to DMA hardware on the chip so the processor does not have to do much freeing it up to continue decoding. Even here I ran into a slight issue. I had to buffer characters as they are being played back since most Morse code is transmitted faster than it can generally be spoken. This is not a major issue as the spoken word catches up during the gaps in the Morse transmission. What I may try doing if speeding up the audio in the WAV files while maintaining the pitch to reduce the overall time delay.</p>
+<p>Ultimately the <a href="https://www.pjrc.com/teensy/sd_adaptor.html">Teensy SD board</a> should allow this functionality to be added to the FT817 version.</p>
+<p>&nbsp;</p>
+<h1>Configuration</h1>
+<p>All the important configuration options are in the settings.h file. It is self documenting.</p>
+<p>&nbsp;</p>
+<h1>Teensy Audio Board Test rig</h1>
+<p>This is my Teensy and Teensy audio board test rig. The LED is connected between pin15 and GND and is used to signify a Morse tone detection. I know I'm not using a current limiting resistor but you should not follow my bad example.</p>
+<p><img src="https://gi1mic.github.io/images/image018.jpg" alt="Trigger" width="601" height="371" /></p>
 <h1>Teensy</h1>
 <h2>Schematic</h2>
 <p><img src="https://gi1mic.github.io/images/image010.jpg" alt="Schematic" width="601" height="563" /></p>
@@ -126,8 +157,33 @@
 <p>If you are wondering why the USB plug was hacked to bits it was because I was trying to see if I could get it through the 2.5mm socket hole and no you can't!</p>
 <p>&nbsp;</p>
 <p><img src="https://gi1mic.github.io/images/image017.jpg" alt="Prototype Board" width="600" /></p>
+<p><img src="https://gi1mic.github.io/images/USB_to_2.5mm_Plug.jpg" alt="Prototype Board" width="600" /></p>
+<h2>&nbsp;</h2>
+<h1><strong>How good are the dynamically generated filters?</strong></h1>
+<p>The following are real measurements using a white noise source and a PC based audio spectrum analyser. I used the Teensy attached to a Teensy audio board to simplify the hardware setup for the testing. So, it identical to what you should get if using it in an external speaker. I doubt there would be any noticeable difference when fitted without the audio board inside a rig.</p>
+<p>The filters are generated by the code from user specified frequency cut points using the default 200 coefficients (maximum accuracy).</p>
+<p>&nbsp;</p>
+<p>First let&rsquo;s have a look at physically bypassing the Teensy for reference:</p>
+<p><img src="https://gi1mic.github.io/images/TrueRTA_Physically_Bypassed.jpg" alt="Prototype Board" width="600" /></p>
+<p>&nbsp;</p>
+<p>Now for the board in circuit but operating in pass-through mode:</p>
+<p><img src="https://gi1mic.github.io/images/TrueRTA_Passthru.jpg" alt="Prototype Board" width="600" /></p>
+<p>&nbsp;</p>
+<p>Now for a low pass filter set for 1Khz:</p>
+<p><img src="https://gi1mic.github.io/images/TrueRTA_Lowpass_1Khz.jpg" alt="Prototype Board" width="600" /></p>
+<p>&nbsp;</p>
+<p>Next a hi pass filter set for 1Khz:</p>
+<p><img src="https://gi1mic.github.io/images/TrueRTA_Hipass_1Khz.jpg" alt="Prototype Board" width="600" /></p>
+<p>&nbsp;</p>
+<p>Next a pass-through filter for SSB i.e. 300Hz - 2.7Khz:</p>
+<p><img src="https://gi1mic.github.io/images/TrueRTA_SSB_300Hz-2.7Khz.jpg" alt="Prototype Board" width="600" /></p>
+<p>&nbsp;</p>
+<p>and lastly a band pass Morse filter i.e. 450Hz - 950Hz</p>
+<p><img src="https://gi1mic.github.io/images/TrueRTA_Morse_450Hz-950Hz.jpg" alt="Prototype Board" width="600" /></p>
+<h2>&nbsp;</h2>
 <h2>Generating new DSP filters manually</h2>
 <p>This section is no longer required unless you have a special requirement. You can now simply specify the filter details in the "filterList[]" array and the coefficients will be generated at runtime.&nbsp; You can also uncomment "#define SHOWCOEFF" which will list the calculated coefficients in .COE format allowing import into MATLAB for analysis.</p>
+<p>However, if you want to create your own filters try the following.</p>
 <h3>Free Online Tool</h3>
 <p>Go to <a href="http://t-filter.engineerjs.com/">http://t-filter.engineerjs.com/</a> and use the Predefined drop down to select one of the predefined filter types such as Bandpass.</p>
 <p><img src="https://gi1mic.github.io/images/image014.png" alt="Online Tool" width="601" height="284" /></p>
