@@ -1,16 +1,15 @@
 <h1>GI1MIC</h1>
 <h1>The $19 DIY DSP audio filter</h1>
-<p>Last updated 6th June 2017</p>
+<p>Last updated 11th June 2017</p>
 <h1>Introduction</h1>
-<p>This is a low cost open source audio DSP filter for Radio Hams. It is released as a building block for anyone who wants to design or customise their own audio filters. It is different from commercial offerings because it is</p>
+<p>This is a low cost open source audio DSP filter for Radio Hams. It is released as a building block for anyone who wants to design or customise their own audio filters. It is different from commercial offerings because is can:</p>
 <ul>
-<li>Cheap</li>
-<li>Can contain multiple filter profiles based on hi pass, lo pass, band pass or band stop</li>
-<li>You can define the filter points in Hz within the code</li>
+<li>Act as multiple DSP filters based on hi pass, lo pass, band pass or band stop (filter points can be defined in Hz within the code)</li>
 <li>It uses voice messages to describe which filter has been selected</li>
 <li>It is a USB to CAT interface</li>
-<li>It emulates a USB sound card for received audio</li>
-<li>Can performs Morse to voice decode and Morse to USB serial decode</li>
+<li>It emulates a USB sound card for receiving rig audio on a computer</li>
+<li>Performs Morse to voice decode and Morse to USB serial decode</li>
+<li>It can speak the radio config to assist the visually impaired (FT817 only)</li>
 </ul>
 <p><iframe src="https://www.youtube.com/embed/s9hHDQcvHOI" width="560" height="315" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
 <p>While I am using the board with a Yaesu FT-817 it is be easily adaptable to any other rig (Icom 706/Kenwood TS50 etc.) or fitted inside an amplified speaker as described later.</p>
@@ -115,8 +114,18 @@
 <p>With the cables fitted it&rsquo;s time to resemble the radio ensuring no wires are trapped or nipped.</p>
 <p>&nbsp;</p>
 <h1>CAT Interface</h1>
-<p>If you uncomment "#define CAT" in the setting.h file and disable all debug messages you can also use the Teensy as a UST-&gt;CAT interface. This requires serial port 2 on the Teensy to be connected to the FT817 CAT interface. Serial port two on the Teensy using pin9 for RX and pin10 for TX. I will add a photograph shortly but for now the following image, even though it is not of a Teensy, should allow anyone who want to try it to move forward.</p>
-<p><img src="https://gi1mic.github.io/images/FT817_acc.png" alt="Trigger" width="601" height="371" /></p>
+<p>If you uncomment "#define CAT" in the setting.h file and disable all debug messages you can also use the Teensy as a UST-&gt;CAT interface. This requires serial port 2 on the Teensy to be connected to the FT817 CAT interface. Serial port two on the Teensy using pin9 for RX and pin10 for TX. </p>
+<p>&nbsp;</p>
+<p>The following image shows two wires tapping off the CAT RX and TX lines.</p>
+<p><img src="https://gi1mic.github.io/images/CATwiringPCB.jpg" alt="CAT Wiring PCB" width="500" height="317" /></p>
+<p>&nbsp;</p>
+<p>The following image shows the two lines connected to a Teensy. In this case I have the Teensy WIZ820IO board attached to provide a SD card slot. This is optional and only required for some speech features.</p>
+<p><img src="https://gi1mic.github.io/images/CATwiringTeensy.jpg" alt="CAT Wiring Teensy" width="500" height="334" /></p>
+<p>&nbsp;</p>
+<h1>Rig config to speech</h1>
+<p>If you have the CAT connection made and a SD card slot attached you can enable a speech readout of the FT817 configuration. To do this simple uncomment "#define SPEECHCONFIG" in the settings.h file. This feature could be handy for the visually impaired.</p>
+<p>&nbsp;</p>
+<p>I have not tested this with CAT rig control so for now either use the CAT interface for speech readout or PC control but don't do both!</p>
 <p>&nbsp;</p>
 <h1>Morse to Speech Decode</h1>
 <p>Morse decoding is performed using an implementation of WB7FHC's Simple Morse Code Decoder. I admit I had thought I would be able simple to do this with the Teensy 3.2 board but I ran into two problems that limit the current implementation to a Teensy plus audio board.</p>
