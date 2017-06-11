@@ -117,7 +117,7 @@
 <p>The following image shows the two lines connected to serial port two on the Teensy. In this case I have the Teensy WIZ820IO board attached to provide a SD card slot. This is optional and only required for some speech features.</p>
 <p><img src="https://gi1mic.github.io/images/CATwiringTeensy.jpg" alt="FT817 CAT Wiring Teensy serial port 2" width="500" height="334" /></p>
 <h1>Rig config to speech</h1>
-<p>If you have the CAT connection made and a SD card slot attached you can enable a speech readout of the FT817 configuration. To do this simple uncomment "#define SPEECHCONFIG" in the settings.h file. This feature could be handy for the visually impaired.</p>
+<p>If you have the CAT connection made and a SD card slot attached, you can enable a speech readout of the FT817 configuration. To do this simple uncomment "#define SPEECHCONFIG" in the settings.h file. This feature could be handy for the visually impaired.</p>
 <p>I have not tested this with CAT rig control so for now either use the CAT interface for speech readout or PC control but don't do both!</p>
 <h1>Morse to Speech Decode</h1>
 <p>Morse decoding is performed using an implementation of WB7FHC's Simple Morse Code Decoder. I admit I had thought I would be able simple to do this with the Teensy 3.2 board but I ran into two problems that limit the current implementation to a Teensy plus audio board.</p>
